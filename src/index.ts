@@ -72,7 +72,7 @@ NEXT_PUBLIC_URL=http://localhost:3000
     if (response.databaseType === 'postgres') {
       // Add postgres dependencies
       const projectPath = path.join(process.cwd(), response.projectName);
-      await execa('npm', ['install', '@payloadcms/db-postgres'], { cwd: projectPath });
+      await execa('npm', ['install', '@payloadcms/db-postgres@beta'], { cwd: projectPath });
       
       // Update database configuration file
       const configPath = path.join(projectPath, 'src/payload.config.ts');
