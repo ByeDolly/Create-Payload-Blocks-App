@@ -12,5 +12,5 @@ Used by the nerds at:
 
 - [ShowZone](https://showzone.gg)
 - [College Pigskin](https://collegepigskin.gg)
-- [SportsCalc](https://sportcalcs.com)
+- [SportCalcs](https://sportcalcs.com)
 - [TeamGear.ca](https://teamgear.ca)
