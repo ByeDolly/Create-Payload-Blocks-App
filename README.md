@@ -4,4 +4,4 @@ A CLI tool to quickly scaffold new projects using the [Payload Blocks Starter](h
 
 ## Quick Start
 
-`npx npx @byedolly/create-payload-blocks-app my-app`
+`npx @byedolly/create-payload-blocks-app my-app`
