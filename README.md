@@ -5,3 +5,12 @@ A CLI tool to quickly scaffold new projects using the [Payload Blocks Starter](h
 ## Quick Start
 
 `npx @byedolly/create-payload-blocks-app my-app`
+
+## Used By
+
+Used by the nerds at:
+
+- [ShowZone](https://showzone.gg)
+- [College Pigskin](https://collegepigskin.gg)
+- [SportsCalc](https://sportcalcs.com)
+- [TeamGear.ca](https://teamgear.ca)
