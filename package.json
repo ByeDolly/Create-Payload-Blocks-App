@@ -1,7 +1,7 @@
 {
   "name": "@byedolly/create-payload-blocks-app",
-  "version": "0.0.1",
-  "description": "CLI tool to create a new Payload Blocks Starter project",
+  "version": "0.0.2",
+  "description": "CLI tool to create a new Payload project using the ByeDolly/Payload-Blocks-Starter",
   "bin": {
     "create-payload-blocks-app": "./dist/index.js"
   },
