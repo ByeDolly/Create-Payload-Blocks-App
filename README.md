@@ -8,9 +8,9 @@ A CLI tool to quickly scaffold new projects using the [Payload Blocks Starter](h
 
 ## Used By
 
-Used by the nerds at:
+Trusted by leading sports and e-commerce platforms:
 
-- [ShowZone](https://showzone.gg)
-- [College Pigskin](https://collegepigskin.gg)
-- [SportCalcs](https://sportcalcs.com)
-- [TeamGear.ca](https://teamgear.ca)
+- [ShowZone](https://showzone.gg) - MLB The Show Community Platform
+- [College Pigskin](https://collegepigskin.gg) - College Football Analytics
+- [SportsCalc](https://sportcalcs.com) - Sports Statistics Calculator
+- [TeamGear.ca](https://teamgear.ca) - Canadian Team Sports Equipment

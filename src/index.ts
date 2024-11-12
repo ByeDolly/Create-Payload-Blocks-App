@@ -68,36 +68,59 @@ NEXT_PUBLIC_URL=http://localhost:3000
 
     await fs.writeFile(path.join(process.cwd(), response.projectName, '.env'), envContent);
 
-    // Update database configuration based on selected type
+    // Configure database
+    const projectPath = path.join(process.cwd(), response.projectName);
+    const configPath = path.join(projectPath, 'src/payload.config.ts');
+    let configContent = await fs.readFile(configPath, 'utf-8');
+
     if (response.databaseType === 'postgres') {
-      // Add postgres dependencies
-      const projectPath = path.join(process.cwd(), response.projectName);
+      // Install postgres adapter
       await execa('npm', ['install', '@payloadcms/db-postgres@beta'], { cwd: projectPath });
       
-      // Update database configuration file
-      const configPath = path.join(projectPath, 'src/payload.config.ts');
-      let configContent = await fs.readFile(configPath, 'utf-8');
-      
-      // Replace the mongoose import with postgres
+      // Add postgres import
+      const postgresImport = `import { postgresAdapter } from '@payloadcms/db-postgres';`;
       configContent = configContent.replace(
-        `import { mongooseAdapter } from '@payloadcms/db-mongodb'`,
-        `import { postgresAdapter } from '@payloadcms/db-postgres'`
+        /\/\/ DATABASE_IMPORT/,
+        postgresImport
       );
       
-      // Replace the db configuration
+      // Define postgres config
+      const dbConfig = `    postgresAdapter({
+      pool: {
+        connectionString: process.env.DATABASE_URI,
+      },
+    })`;
+
+      // Replace db config
       configContent = configContent.replace(
-        `db: mongooseAdapter({
-        url: process.env.DATABASE_URI || "",
-      }),`,
-        `db: postgresAdapter({
-        pool: {
-          connectionString: process.env.DATABASE_URI,
-        },
-      }),`
+        /\/\/ DATABASE_CONFIG/,
+        dbConfig
+      );
+
+    } else {
+      // Install mongodb adapter
+      await execa('npm', ['install', '@payloadcms/db-mongodb'], { cwd: projectPath });
+      
+      // Add mongodb import
+      const mongoImport = `import { mongooseAdapter } from '@payloadcms/db-mongodb';`;
+      configContent = configContent.replace(
+        /\/\/ DATABASE_IMPORT/,
+        mongoImport
       );
       
-      await fs.writeFile(configPath, configContent);
+      // Define mongodb config
+      const dbConfig = `    mongooseAdapter({
+      url: process.env.DATABASE_URI || "",
+    })`;
+
+      // Replace db config
+      configContent = configContent.replace(
+        /\/\/ DATABASE_CONFIG/,
+        dbConfig
+      );
     }
+
+    await fs.writeFile(configPath, configContent);
 
     spinner.succeed(chalk.green('Project created successfully!'));
     
