@@ -77,17 +77,25 @@ NEXT_PUBLIC_URL=http://localhost:3000
       // Update database configuration file
       const configPath = path.join(projectPath, 'src/payload.config.ts');
       let configContent = await fs.readFile(configPath, 'utf-8');
+      
+      // Replace the mongoose import with postgres
       configContent = configContent.replace(
         `import { mongooseAdapter } from '@payloadcms/db-mongodb'`,
         `import { postgresAdapter } from '@payloadcms/db-postgres'`
       );
+      
+      // Replace the db configuration
       configContent = configContent.replace(
-        'adapter: mongooseAdapter({',
-        `adapter: postgresAdapter({
-          pool: {
-            connectionString: process.env.DATABASE_URI,
-          },`
+        `db: mongooseAdapter({
+        url: process.env.DATABASE_URI || "",
+      }),`,
+        `db: postgresAdapter({
+        pool: {
+          connectionString: process.env.DATABASE_URI,
+        },
+      }),`
       );
+      
       await fs.writeFile(configPath, configContent);
     }
 
