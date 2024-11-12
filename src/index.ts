@@ -75,7 +75,7 @@ NEXT_PUBLIC_URL=http://localhost:3000
 
     if (response.databaseType === 'postgres') {
       // Install postgres adapter
-      await execa('npm', ['install', '@payloadcms/db-postgres@beta'], { cwd: projectPath });
+      await execa('pnpm', ['install', '@payloadcms/db-postgres@beta'], { cwd: projectPath });
       
       // Add postgres import
       const postgresImport = `import { postgresAdapter } from '@payloadcms/db-postgres';`;
@@ -85,21 +85,21 @@ NEXT_PUBLIC_URL=http://localhost:3000
       );
       
       // Define postgres config
-      const dbConfig = `    postgresAdapter({
-      pool: {
-        connectionString: process.env.DATABASE_URI,
-      },
-    })`;
+      const dbConfig = `postgresAdapter({
+    pool: {
+      connectionString: process.env.DATABASE_URI,
+    },
+  })`;
 
       // Replace db config
       configContent = configContent.replace(
-        /\/\/ DATABASE_CONFIG/,
-        dbConfig
+        /db: \/\/ DATABASE_CONFIG/,
+        `db: ${dbConfig}`
       );
 
     } else {
       // Install mongodb adapter
-      await execa('npm', ['install', '@payloadcms/db-mongodb'], { cwd: projectPath });
+      await execa('pnpm', ['install', '@payloadcms/db-mongodb@beta'], { cwd: projectPath });
       
       // Add mongodb import
       const mongoImport = `import { mongooseAdapter } from '@payloadcms/db-mongodb';`;
@@ -109,14 +109,14 @@ NEXT_PUBLIC_URL=http://localhost:3000
       );
       
       // Define mongodb config
-      const dbConfig = `    mongooseAdapter({
-      url: process.env.DATABASE_URI || "",
-    })`;
+      const dbConfig = `mongooseAdapter({
+    url: process.env.DATABASE_URI || "",
+  })`;
 
       // Replace db config
       configContent = configContent.replace(
-        /\/\/ DATABASE_CONFIG/,
-        dbConfig
+        /db: \/\/ DATABASE_CONFIG/,
+        `db: ${dbConfig}`
       );
     }
 
