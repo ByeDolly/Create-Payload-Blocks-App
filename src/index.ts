@@ -61,7 +61,7 @@ async function main() {
 
     // Create .env file
     const envContent = `
-DATABASE_URI=${response.databaseUrl}
+DATABSE_URL=${response.databaseUrl}
 PAYLOAD_SECRET=${payloadSecret}
 NEXT_PUBLIC_URL=http://localhost:3000
     `.trim();
