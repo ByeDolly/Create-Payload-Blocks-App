@@ -70,57 +70,33 @@ NEXT_PUBLIC_URL=http://localhost:3000
 
     // Configure database
     const projectPath = path.join(process.cwd(), response.projectName);
-    const configPath = path.join(projectPath, 'src/payload.config.ts');
-    let configContent = await fs.readFile(configPath, 'utf-8');
+    const srcPath = path.join(projectPath, 'src');
 
     if (response.databaseType === 'postgres') {
-      // Install postgres adapter
-      await execa('pnpm', ['install', '@payloadcms/db-postgres@beta'], { cwd: projectPath });
+      // Install postgres adapter with specific version
+      await execa('pnpm', ['install', '@payloadcms/db-postgres@3.0.0-beta.126'], { cwd: projectPath });
       
-      // Add postgres import
-      const postgresImport = `import { postgresAdapter } from '@payloadcms/db-postgres';`;
-      configContent = configContent.replace(
-        /\/\/ DATABASE_IMPORT/,
-        postgresImport
-      );
+      // Delete MongoDB config
+      await fs.unlink(path.join(srcPath, 'mongo.payload.config.ts'));
       
-      // Define postgres config
-      const dbConfig = `postgresAdapter({
-    pool: {
-      connectionString: process.env.DATABASE_URI,
-    },
-  })`;
-
-      // Replace db config
-      configContent = configContent.replace(
-        /db: \/\/ DATABASE_CONFIG/,
-        `db: ${dbConfig}`
+      // Rename Postgres config
+      await fs.rename(
+        path.join(srcPath, 'postgres.payload.config.ts'),
+        path.join(srcPath, 'payload.config.ts')
       );
-
     } else {
-      // Install mongodb adapter
-      await execa('pnpm', ['install', '@payloadcms/db-mongodb@beta'], { cwd: projectPath });
+      // Install mongodb adapter with specific version
+      await execa('pnpm', ['install', '@payloadcms/db-mongodb@3.0.0-beta.126'], { cwd: projectPath });
       
-      // Add mongodb import
-      const mongoImport = `import { mongooseAdapter } from '@payloadcms/db-mongodb';`;
-      configContent = configContent.replace(
-        /\/\/ DATABASE_IMPORT/,
-        mongoImport
-      );
+      // Delete Postgres config
+      await fs.unlink(path.join(srcPath, 'postgres.payload.config.ts'));
       
-      // Define mongodb config
-      const dbConfig = `mongooseAdapter({
-    url: process.env.DATABASE_URI || "",
-  })`;
-
-      // Replace db config
-      configContent = configContent.replace(
-        /db: \/\/ DATABASE_CONFIG/,
-        `db: ${dbConfig}`
+      // Rename MongoDB config
+      await fs.rename(
+        path.join(srcPath, 'mongo.payload.config.ts'),
+        path.join(srcPath, 'payload.config.ts')
       );
     }
-
-    await fs.writeFile(configPath, configContent);
 
     spinner.succeed(chalk.green('Project created successfully!'));
     
